@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <title>TechGeekPH Quick Access – Debt & Expense Tracker</title>
+  <style>
+    :root{--navy:#0b1f3a;--blue:#155eef;--blue2:#0f46b9;--sky:#eaf2ff;--ink:#172b4d;--muted:#667085;--line:#dce5f2;--soft:#f6f8fc;--white:#fff;--green:#16803a;--greenbg:#eaf7ee;--amber:#b54708;--amberbg:#fff4e5;--red:#b42318;--redbg:#fdecec;--shadow:0 12px 30px rgba(20,40,80,.08)}
+    *{box-sizing:border-box} body{margin:0;background:#f4f7fb;color:var(--ink);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif} button,input,select,textarea{font:inherit} button{cursor:pointer}
+    .top{background:linear-gradient(125deg,var(--navy),#103b74);color:#fff}.top-inner{max-width:1320px;margin:auto;padding:22px 22px 18px;display:flex;gap:18px;justify-content:space-between;align-items:flex-start}.brand{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#bad2ff}.top h1{margin:3px 0 5px;font-size:28px;line-height:1.15}.top p{margin:0;color:#d9e6fb;max-width:760px}.status{display:flex;gap:8px;align-items:center;white-space:nowrap;background:#ffffff12;border:1px solid #ffffff28;border-radius:999px;padding:8px 11px;font-size:12px}.dot{width:8px;height:8px;background:#69db91;border-radius:50%}
+    .nav-wrap{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}.nav{max-width:1320px;margin:auto;padding:9px 18px;display:flex;gap:6px;overflow:auto}.nav button{border:0;background:transparent;color:#52627a;padding:9px 13px;border-radius:10px;font-weight:700;white-space:nowrap}.nav button.active{background:var(--sky);color:var(--blue)}
+    main{max-width:1320px;margin:0 auto;padding:22px}.notice{background:var(--amberbg);color:#7a3c06;border:1px solid #f5c77a;border-radius:14px;padding:11px 13px;margin-bottom:16px}.notice strong{color:var(--amber)}
+    .page{display:none}.page.active{display:block}.page-title{display:flex;gap:12px;justify-content:space-between;align-items:flex-end;margin:4px 0 14px}.page-title h2{margin:0;font-size:21px}.page-title p{margin:2px 0 0;color:var(--muted)}
+    .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:var(--shadow)}.card .label{font-size:12px;font-weight:700;color:var(--muted);min-height:34px}.card .value{font-size:25px;font-weight:850;letter-spacing:-.02em;margin-top:4px}.card .sub{font-size:11px;color:var(--muted);margin-top:3px}.card.warn{background:#fffaf2;border-color:#f6d394}.card.good{background:#f5fbf7;border-color:#ccebd5}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.panel-head h3{font-size:15px;margin:0}.panel-head span{font-size:12px;color:var(--muted)}.panel-body{padding:15px}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.step{background:var(--soft);border:1px solid var(--line);border-radius:13px;padding:13px}.step b{display:block;color:var(--blue);font-size:12px;margin-bottom:5px}.step span{font-weight:750}.step p{margin:5px 0 0;color:var(--muted);font-size:12px}
+    form{margin:0}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.wide{grid-column:1/-1}.field label{font-size:11px;font-weight:800;color:#52627a}.field input,.field select,.field textarea{width:100%;border:1px solid #cfd9e8;border-radius:10px;padding:10px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #155eef18}.field textarea{min-height:76px;resize:vertical}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{border:1px solid transparent;border-radius:10px;padding:9px 12px;font-weight:800}.btn.primary{background:var(--blue);color:#fff}.btn.primary:hover{background:var(--blue2)}.btn.secondary{background:#fff;border-color:#cfd9e8;color:var(--ink)}.btn.danger{background:var(--redbg);color:var(--red);border-color:#f2c5c0}.btn.small{padding:5px 8px;font-size:11px}.btn.link{background:transparent;color:var(--blue);padding:5px 7px}
+    .table-wrap{overflow:auto}.data{border-collapse:collapse;width:100%;min-width:760px}.data th,.data td{padding:10px 9px;border-bottom:1px solid #edf1f7;text-align:left;vertical-align:top}.data th{font-size:11px;color:#586a84;background:#f8faff;position:sticky;top:0}.data td.num,.data th.num{text-align:right}.data tr:last-child td{border-bottom:0}.money{font-variant-numeric:tabular-nums;white-space:nowrap}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:850;white-space:nowrap}.pill.fixed{background:var(--sky);color:var(--blue)}.pill.running{background:#f2ecff;color:#6941c6}.pill.paid{background:var(--greenbg);color:var(--green)}.pill.unpaid,.pill.review{background:var(--amberbg);color:var(--amber)}.pill.ok{background:var(--greenbg);color:var(--green)}
+    .empty{padding:18px;text-align:center;color:var(--muted)}.summary-line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #edf1f7}.summary-line:last-child{border-bottom:0}.summary-line b{font-variant-numeric:tabular-nums}
+    .backup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.backup-box{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fff}.backup-box h3{margin:0 0 6px;font-size:15px}.backup-box p{margin:0 0 12px;color:var(--muted);font-size:12px}.source-link{word-break:break-all;color:var(--blue);text-decoration:none}
+    dialog{border:0;border-radius:18px;padding:0;max-width:620px;width:calc(100% - 24px);box-shadow:0 30px 90px #102a56aa}dialog::backdrop{background:#0b1f3ab5}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--line)}.dialog-head h3{margin:0}.dialog-body{padding:17px}.icon-btn{border:0;background:var(--soft);width:32px;height:32px;border-radius:9px;color:var(--ink)}
+    .footer{max-width:1320px;margin:0 auto 24px;padding:0 22px;color:#7a8799;font-size:11px}.toast{position:fixed;right:18px;bottom:18px;background:var(--navy);color:#fff;border-radius:11px;padding:10px 13px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:50}.toast.show{opacity:1;transform:none}
+    @media(max-width:960px){.cards{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.top-inner{flex-direction:column}.status{align-self:flex-start}}
+    @media(max-width:620px){main{padding:14px}.top-inner{padding:18px 15px}.top h1{font-size:23px}.cards{grid-template-columns:1fr 1fr;gap:8px}.card{padding:12px}.card .value{font-size:20px}.steps,.backup-grid,.form-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}.page-title{align-items:flex-start;flex-direction:column}.data th,.data td{padding:8px 7px}.nav{padding-left:10px}.notice{font-size:12px}}
+    @media print{.nav-wrap,.actions,.status,.notice,.btn,.footer{display:none!important}.page{display:none!important}#dashboard.page{display:block!important}body{background:#fff}main{max-width:none;padding:0}.card,.panel{box-shadow:none}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div>
+        <div class="brand">TechGeekPH Solutions &amp; Services Inc.</div>
+        <h1>Business Debt &amp; Expense Quick Access</h1>
+        <p>One place for fixed loans, running/card balances, monthly bills, and daily business expenses.</p>
+      </div>
+      <div class="status"><span class="dot"></span><span id="saveStatus">Local auto-save ready</span></div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <nav class="nav" aria-label="Main sections">
+      <button class="active" data-page="dashboard">Dashboard</button>
+      <button data-page="quick">Quick Update</button>
+      <button data-page="debts">Debts</button>
+      <button data-page="bills">Bills</button>
+      <button data-page="backup">Sync &amp; Backup</button>
+    </nav>
+  </div>
+
+  <main>
+    <div id="modeNotice" class="notice"><strong>Setup:</strong> Open Sync &amp; Backup and connect your Apps Script Web App URL + private Sync Key. Until connected, this page works in local-only mode.</div>
+
+    <section id="dashboard" class="page active">
+      <div class="page-title"><div><h2>Dashboard</h2><p>Live totals from your saved entries.</p></div><button class="btn secondary" type="button" onclick="window.print()">Print Summary</button></div>
+      <div id="dashboardCards" class="cards"></div>
+      <div class="panel" style="margin-bottom:14px">
+        <div class="panel-head"><h3>Fastest update routine</h3><span>Recommended workflow</span></div>
+        <div class="panel-body"><div class="steps">
+          <div class="step"><b>1 • PAYMENT</b><span>Log every loan/card payment</span><p>Quick Update → Debt ID → Payment. Balance decreases automatically.</p></div>
+          <div class="step"><b>2 • NEW CHARGE</b><span>Log new borrowing/charges</span><p>Quick Update → New Borrowing / Charge. Balance increases automatically.</p></div>
+          <div class="step"><b>3 • EXPENSE</b><span>Record daily business expense</span><p>Do not record the same loan payment again as an expense.</p></div>
+          <div class="step"><b>4 • MONTHLY</b><span>Update card statement due</span><p>Debts → Edit. Change Statement Due when the new statement arrives.</p></div>
+        </div></div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="panel-head"><h3>Upcoming active debts</h3><span>Sorted by due day</span></div><div class="table-wrap" id="upcomingDebts"></div></div>
+        <div class="panel"><div class="panel-head"><h3>Current bill status</h3><span id="billMonthLabel">August 2026</span></div><div class="panel-body" id="billSummary"></div></div>
+      </div>
+    </section>
+
+    <section id="quick" class="page">
+      <div class="page-title"><div><h2>Quick Update</h2><p>This is the page you should use most often.</p></div></div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h3>Debt / loan movement</h3><span>Payment or new borrowing</span></div>
+          <div class="panel-body">
+            <form id="debtTxForm">
+              <div class="form-grid">
+                <div class="field"><label for="txDate">Date</label><input id="txDate" name="date" type="date" required /></div>
+                <div class="field"><label for="txDebt">Debt ID</label><select id="txDebt" name="debtId" required></select></div>
+                <div class="field"><label for="txType">Update type</label><select id="txType" name="type" required><option>Payment</option><option>New Borrowing / Charge</option></select></div>
+                <div class="field"><label for="txAmount">Amount</label><input id="txAmount" name="amount" type="number" min="0.01" step="0.01" required /></div>
+                <div class="field"><label for="txReference">Reference</label><input id="txReference" name="reference" placeholder="OR / ref / optional" /></div>
+                <div class="field"><label for="txNotes">Notes</label><input id="txNotes" name="notes" placeholder="Optional" /></div>
+              </div>
+              <div class="actions"><button class="btn primary" type="submit">Save Debt Update</button></div>
+            </form>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Daily business expense</h3><span>Operating expenses only</span></div>
+          <div class="panel-body">
+            <form id="expenseForm">
+              <div class="form-grid">
+                <div class="field"><label for="expDate">Date</label><input id="expDate" name="date" type="date" required /></div>
+                <div class="field"><label for="expCategory">Category</label><select id="expCategory" name="category" required><option>Supplies</option><option>Utilities</option><option>Transport</option><option>Meals</option><option>Payroll</option><option>Rent</option><option>Software / Online</option><option>Marketing</option><option>Repairs</option><option>Other</option></select></div>
+                <div class="field wide"><label for="expDescription">Description</label><input id="expDescription" name="description" required placeholder="What was paid for?" /></div>
+                <div class="field"><label for="expAmount">Amount</label><input id="expAmount" name="amount" type="number" min="0.01" step="0.01" required /></div>
+                <div class="field"><label for="expMethod">Payment method</label><select id="expMethod" name="method"><option>Cash</option><option>GCash</option><option>Maya</option><option>Bank Transfer</option><option>Card</option><option>Other</option></select></div>
+                <div class="field"><label for="expReference">Reference / OR</label><input id="expReference" name="reference" placeholder="Optional" /></div>
+                <div class="field"><label for="expNotes">Notes</label><input id="expNotes" name="notes" placeholder="Optional" /></div>
+              </div>
+              <div class="actions"><button class="btn primary" type="submit">Save Expense</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="panel"><div class="panel-head"><h3>Recent debt updates</h3><span>Newest first</span></div><div class="table-wrap" id="recentDebtTx"></div></div>
+        <div class="panel"><div class="panel-head"><h3>Recent expenses</h3><span>Newest first</span></div><div class="table-wrap" id="recentExpenses"></div></div>
+      </div>
+    </section>
+
+    <section id="debts" class="page">
+      <div class="page-title"><div><h2>Debt Master</h2><p>Fixed installment and running/card accounts in one list.</p></div><button class="btn primary" type="button" onclick="openDebtDialog()">+ Add Loan / Account</button></div>
+      <div class="notice"><strong>Running Credit:</strong> payments/new charges change Current Balance automatically. When a new card statement arrives, use Edit to update only “Monthly / Statement Due”.</div>
+      <div class="panel"><div class="table-wrap" id="debtTable"></div></div>
+    </section>
+
+    <section id="bills" class="page">
+      <div class="page-title"><div><h2>Current Bills</h2><p>Cash-due checklist loaded privately from your Google Sheet.</p></div></div>
+      <div class="notice"><strong>No double-counting:</strong> running-credit bill entries may also exist in Debt Master. Bills are the cash-due checklist, not an extra debt total.</div>
+      <div class="panel"><div class="table-wrap" id="billsTable"></div></div>
+    </section>
+
+    <section id="backup" class="page">
+      <div class="page-title"><div><h2>Sync &amp; Backup</h2><p>Connect GitHub Pages to your Google Sheet, then keep a portable backup.</p></div></div>
+      <div class="backup-grid">
+        <div class="backup-box" style="grid-column:1/-1"><h3>Google Sheets Connection</h3><p>Paste the Apps Script Web App <b>/exec</b> URL and the private Sync Key from <code>setupV2()</code>. The key is saved only in this browser, not in your GitHub source.</p><div class="form-grid"><div class="field"><label for="apiUrl">Apps Script Web App URL</label><input id="apiUrl" type="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/.../exec" /></div><div class="field"><label for="syncKey">Private Sync Key</label><input id="syncKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste Sync Key here" /></div></div><div class="actions"><button class="btn primary" type="button" onclick="connectSheets()">Connect Google Sheets</button><button class="btn secondary" type="button" onclick="syncFromSheets()">Sync Now</button><button class="btn secondary" type="button" onclick="disconnectSheets()">Use Local Mode</button></div><div id="connectionInfo" class="muted" style="margin-top:8px">Not connected.</div></div>
+        <div class="backup-box"><h3>Export backup</h3><p>JSON keeps debts, payments, expenses and bill statuses. CSV exports are useful for Excel/Google Sheets.</p><div class="actions"><button class="btn primary" type="button" onclick="exportJson()">Export JSON</button><button class="btn secondary" type="button" onclick="exportDebtCsv()">Debt CSV</button><button class="btn secondary" type="button" onclick="exportExpenseCsv()">Expense CSV</button></div></div>
+        <div class="backup-box"><h3>Import backup</h3><p>Choose a JSON backup from this tracker. Import replaces the current local data after confirmation.</p><div class="field"><label for="importFile">JSON file</label><input id="importFile" type="file" accept="application/json,.json" /></div><div class="actions"><button class="btn secondary" type="button" onclick="importJson()">Import JSON</button></div></div>
+        <div class="backup-box"><h3>Private backend</h3><p>Your Spreadsheet ID and starting financial data stay in <code>Code.gs</code>, not in this public GitHub page.</p></div>
+        <div class="backup-box"><h3>Reset tracker</h3><p>When connected, this restores the starting V2 dataset in Google Sheets. In Local Mode, it clears the local tracker data.</p><button class="btn danger" type="button" onclick="resetToSource()">Reset Tracker</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">TechGeekPH Quick Access V2.1 • GitHub Pages + private Google Sheets sync with local fallback.</footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="debtDialog">
+    <div class="dialog-head"><h3 id="debtDialogTitle">Add Loan / Account</h3><button class="icon-btn" type="button" aria-label="Close" onclick="closeDebtDialog()">✕</button></div>
+    <div class="dialog-body">
+      <form id="debtForm">
+        <input id="editDebtId" type="hidden" />
+        <div class="form-grid">
+          <div class="field"><label for="debtScope">Scope</label><select id="debtScope" required><option>Business</option><option>Household</option></select></div>
+          <div class="field"><label for="debtType">Type</label><select id="debtType" required><option>Fixed Installment</option><option>Running Credit</option></select></div>
+          <div class="field wide"><label for="debtCreditor">Creditor</label><input id="debtCreditor" required /></div>
+          <div class="field"><label for="debtOpening">Opening balance</label><input id="debtOpening" type="number" min="0" step="0.01" required /></div>
+          <div class="field"><label for="debtDueAmount">Monthly / Statement Due</label><input id="debtDueAmount" type="number" min="0" step="0.01" required /></div>
+          <div class="field"><label for="debtTerms">Terms (months)</label><input id="debtTerms" type="number" min="1" step="1" placeholder="Optional for cards" /></div>
+          <div class="field"><label for="debtDueDay">Due day</label><input id="debtDueDay" type="number" min="1" max="31" step="1" required /></div>
+          <div class="field wide"><label for="debtNote">Notes / action</label><textarea id="debtNote" placeholder="Optional"></textarea></div>
+        </div>
+        <div class="actions"><button class="btn primary" type="submit">Save Account</button><button class="btn secondary" type="button" onclick="closeDebtDialog()">Cancel</button></div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    'use strict';
+    const STORAGE_KEY='techgeekph_finance_v2';
+    const API_URL_KEY='techgeekph_v2_apps_script_url';
+    const SYNC_KEY_STORAGE='techgeekph_v2_sync_key';
+    const moneyFmt=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumFractionDigits:2});
+    const money=n=>moneyFmt.format(Number(n)||0);
+    const num=v=>Number(v)||0;
+    const h=v=>String(v??'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
+    const uid=()=>`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,9)}`;
+    const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+
+    function seedState(){return {
+      version:2,sourceAsOf:'',billingMonth:'',savedAt:null,
+      debts:[],transactions:[],expenses:[],bills:[]
+    }}
+
+    let storageAvailable=true;
+    let syncBusy=false;
+    function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?JSON.parse(raw):seedState()}catch(e){storageAvailable=false;return seedState()}}
+    let state=loadState();
+    const cloneState=()=>JSON.parse(JSON.stringify(state));
+    function cacheState(){state.savedAt=state.savedAt||new Date().toISOString();try{if(storageAvailable)localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){storageAvailable=false}}
+    function getStored(key){try{return storageAvailable?(localStorage.getItem(key)||''):''}catch(e){storageAvailable=false;return ''}}
+    function setStored(key,value){try{if(storageAvailable)localStorage.setItem(key,value)}catch(e){storageAvailable=false}}
+    function removeStored(key){try{if(storageAvailable)localStorage.removeItem(key)}catch(e){storageAvailable=false}}
+    function apiConfig(){return {url:getStored(API_URL_KEY).trim(),key:getStored(SYNC_KEY_STORAGE).trim()}}
+    function remoteReady(){const c=apiConfig();return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(c.url)&&c.key.length>=20}
+    function saveLocal(message='Saved locally'){state.savedAt=new Date().toISOString();cacheState();renderAll();toast(message)}
+    function updateSaveStatus(){const el=document.getElementById('saveStatus');if(syncBusy){el.textContent='Syncing with Google Sheets…';return}if(remoteReady()){el.textContent=state.savedAt?'Google Sheets • '+new Date(state.savedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'Google Sheets connected';return}el.textContent=storageAvailable?(state.savedAt?'Local mode • '+new Date(state.savedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'Local mode ready'):'Local storage unavailable • export backups'}
+    function updateConnectionUI(){const cfg=apiConfig();const urlEl=document.getElementById('apiUrl'),keyEl=document.getElementById('syncKey'),info=document.getElementById('connectionInfo'),notice=document.getElementById('modeNotice');if(urlEl&&document.activeElement!==urlEl)urlEl.value=cfg.url;if(keyEl&&document.activeElement!==keyEl)keyEl.value=cfg.key;if(remoteReady()){info.textContent='Connected configuration saved in this browser. Use Sync Now anytime to refresh from Google Sheets.';notice.innerHTML='<strong>Google Sheets mode:</strong> Payments, new borrowing, expenses, debt edits and bill status changes are saved to the V2_ tabs in your Google Sheet.'}else{info.textContent='Not connected. Local-only mode is active.';notice.innerHTML='<strong>Setup:</strong> Open Sync & Backup and connect your Apps Script Web App URL + private Sync Key. Until connected, this page works in local-only mode.'}}
+
+    function apiCall(action,payload={}){
+      const cfg=apiConfig();
+      if(!remoteReady())return Promise.reject(new Error('Google Sheets connection is not configured.'));
+      return new Promise((resolve,reject)=>{
+        const callback='__tgcb_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8);
+        const script=document.createElement('script');
+        let done=false;
+        const cleanup=()=>{if(done)return;done=true;clearTimeout(timer);try{delete window[callback]}catch(e){window[callback]=undefined}script.remove()};
+        const timer=setTimeout(()=>{cleanup();reject(new Error('Google Sheets sync timed out. Check the Web App deployment and internet connection.'))},20000);
+        window[callback]=response=>{cleanup();if(!response||response.ok!==true){reject(new Error(response?.error||'Google Sheets returned an error.'));return}resolve(response)};
+        script.onerror=()=>{cleanup();reject(new Error('Could not reach the Apps Script Web App. Check the /exec URL and deployment access.'))};
+        const url=new URL(cfg.url);url.searchParams.set('action',action);url.searchParams.set('key',cfg.key);url.searchParams.set('callback',callback);url.searchParams.set('t',String(Date.now()));if(payload&&Object.keys(payload).length)url.searchParams.set('payload',JSON.stringify(payload));script.src=url.toString();document.head.appendChild(script);
+      });
+    }
+
+    async function connectSheets(){
+      const url=document.getElementById('apiUrl').value.trim();
+      const key=document.getElementById('syncKey').value.trim();
+      if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(url))return alert('Paste the Apps Script Web App /exec URL.');
+      if(key.length<20)return alert('Paste the private Sync Key from setupV2().');
+      setStored(API_URL_KEY,url);setStored(SYNC_KEY_STORAGE,key);updateConnectionUI();
+      await syncFromSheets();
+    }
+
+    async function syncFromSheets(silent=false){
+      if(!remoteReady()){if(!silent)alert('Google Sheets is not connected yet. Add the Web App URL and Sync Key first.');return false}
+      syncBusy=true;updateSaveStatus();
+      try{const res=await apiCall('getAppData');state=res.data;cacheState();renderAll();if(!silent)toast('Synced from Google Sheets');return true}
+      catch(err){if(!silent)alert('Sync failed: '+err.message);updateConnectionUI();return false}
+      finally{syncBusy=false;updateSaveStatus()}
+    }
+
+    function disconnectSheets(){removeStored(API_URL_KEY);removeStored(SYNC_KEY_STORAGE);updateConnectionUI();updateSaveStatus();toast('Local mode enabled')}
+
+    async function commitMutation(action,payload,applyLocal,message){
+      if(syncBusy)return toast('Please wait for the current sync.');
+      const before=cloneState();
+      applyLocal();state.savedAt=new Date().toISOString();cacheState();renderAll();
+      if(!remoteReady()){toast(message+' • local');return true}
+      syncBusy=true;updateSaveStatus();
+      try{const res=await apiCall(action,payload);state=res.data;cacheState();renderAll();toast(message+' • synced');return true}
+      catch(err){state=before;cacheState();renderAll();alert('Google Sheets save failed. Your change was rolled back here.\n\n'+err.message);return false}
+      finally{syncBusy=false;updateSaveStatus()}
+    }
+
+    function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1800)}
+    function balance(debt){let v=num(debt.openingBalance);for(const t of state.transactions){if(t.debtId!==debt.id)continue;v+=t.type==='Payment'?-num(t.amount):num(t.amount)}return Math.max(0,v)}
+    const isActive=d=>balance(d)>0.005;
+    const monthKey=()=>today().slice(0,7);
+    const sum=(arr,fn)=>arr.reduce((a,x)=>a+num(fn(x)),0);
+
+    function renderAll(){renderDebtSelect();renderDashboard();renderDebtTable();renderBills();renderRecent();updateConnectionUI();updateSaveStatus()}
+    function renderDebtSelect(){const sel=document.getElementById('txDebt');const current=sel.value;sel.innerHTML='<option value="">Choose account…</option>'+state.debts.filter(isActive).map(d=>`<option value="${h(d.id)}">${h(d.id)} • ${h(d.creditor)}</option>`).join('');if([...sel.options].some(o=>o.value===current))sel.value=current}
+
+    function renderDashboard(){
+      const business=state.debts.filter(d=>d.scope==='Business');
+      const household=state.debts.filter(d=>d.scope==='Household');
+      const base=business.filter(d=>d.type==='Fixed Installment');
+      const cards=business.filter(d=>d.type==='Running Credit');
+      const totalBusiness=sum(business,balance),baseBalance=sum(base,balance),fixedDue=sum(base.filter(isActive),d=>d.monthlyDue),cardDue=sum(cards.filter(isActive),d=>d.monthlyDue);
+      const unpaid=state.bills.filter(b=>b.status==='Unpaid');const unpaidTotal=sum(unpaid,b=>b.amount);const hh=sum(household,balance);const monthExp=sum(state.expenses.filter(e=>String(e.date).slice(0,7)===monthKey()),e=>e.amount);const reviews=state.debts.filter(d=>d.review).length;
+      const cardsData=[['Total Business Debt',money(totalBusiness),'Includes running-credit accounts',''],['Base Business Loans',money(baseBalance),'Fixed-installment accounts',''],['Fixed Installment / Month',money(fixedDue),'Scheduled monthly amount',''],['Running Credit Statement Due',money(cardDue),'Update when statement arrives','warn'],['Current Unpaid Bills',money(unpaidTotal),`${unpaid.length} unpaid item${unpaid.length===1?'':'s'}`,'warn'],['Household Debt',money(hh),'Reference only',''],['Business Expenses This Month',money(monthExp),`${state.expenses.filter(e=>String(e.date).slice(0,7)===monthKey()).length} records`,''],['Review Items',String(reviews),'Source items to verify',reviews?'warn':'good']];
+      document.getElementById('dashboardCards').innerHTML=cardsData.map(c=>`<div class="card ${c[3]}"><div class="label">${h(c[0])}</div><div class="value">${h(c[1])}</div><div class="sub">${h(c[2])}</div></div>`).join('');
+      const upcoming=state.debts.filter(isActive).slice().sort((a,b)=>a.dueDay-b.dueDay).slice(0,8);
+      document.getElementById('upcomingDebts').innerHTML=upcoming.length?`<table class="data"><thead><tr><th>Due</th><th>Account</th><th class="num">Due Amount</th><th class="num">Balance</th></tr></thead><tbody>${upcoming.map(d=>`<tr><td>${h(d.dueDay)}</td><td><b>${h(d.creditor)}</b><div class="muted">${h(d.id)} • ${h(d.scope)}</div></td><td class="num money">${money(d.monthlyDue)}</td><td class="num money">${money(balance(d))}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No active debts.</div>';
+      const paid=state.bills.filter(b=>b.status==='Paid');document.getElementById('billSummary').innerHTML=`<div class="summary-line"><span>Unpaid bills</span><b>${money(unpaidTotal)}</b></div><div class="summary-line"><span>Paid bills</span><b>${money(sum(paid,b=>b.amount))}</b></div><div class="summary-line"><span>All current bills</span><b>${money(sum(state.bills,b=>b.amount))}</b></div><div class="summary-line"><span>Reminder</span><span class="muted">Running-credit bills may already be in Debt Master.</span></div>`;
+    }
+
+    function renderDebtTable(){
+      const rows=state.debts.slice().sort((a,b)=>a.scope.localeCompare(b.scope)||a.dueDay-b.dueDay);
+      document.getElementById('debtTable').innerHTML=`<table class="data"><thead><tr><th>ID</th><th>Scope / Creditor</th><th>Type</th><th>Due</th><th class="num">Monthly / Statement</th><th class="num">Current Balance</th><th>Review</th><th></th></tr></thead><tbody>${rows.map(d=>`<tr><td><b>${h(d.id)}</b></td><td><b>${h(d.creditor)}</b><div class="muted">${h(d.scope)}</div></td><td><span class="pill ${d.type==='Running Credit'?'running':'fixed'}">${h(d.type)}</span></td><td>Day ${h(d.dueDay)}<div class="muted">${d.terms?`${h(d.terms)} mos`:''}</div></td><td class="num money">${money(d.monthlyDue)}</td><td class="num money"><b>${money(balance(d))}</b></td><td>${d.review?`<span class="pill review">${h(d.review)}</span><div class="muted" style="max-width:270px;margin-top:4px">${h(d.note)}</div>`:'<span class="pill ok">OK</span>'}</td><td><button class="btn secondary small" type="button" onclick="openDebtDialog('${h(d.id)}')">Edit</button></td></tr>`).join('')}</tbody></table>`;
+    }
+
+    function renderBills(){
+      document.getElementById('billsTable').innerHTML=`<table class="data"><thead><tr><th>Biller</th><th class="num">Amount</th><th>Terms</th><th>Due</th><th>Category</th><th>Debt Link</th><th>Status</th></tr></thead><tbody>${state.bills.slice().sort((a,b)=>a.dueDay-b.dueDay).map(b=>`<tr><td><b>${h(b.biller)}</b></td><td class="num money">${money(b.amount)}</td><td>${h(b.terms||'-')}</td><td>Day ${h(b.dueDay)}</td><td>${h(b.category)}</td><td>${h(b.debtId||'—')}</td><td><button class="btn small ${b.status==='Paid'?'secondary':'primary'}" type="button" onclick="toggleBill('${h(b.id)}')"><span class="pill ${b.status==='Paid'?'paid':'unpaid'}">${h(b.status)}</span></button></td></tr>`).join('')}</tbody></table>`;
+    }
+
+    function renderRecent(){
+      const tx=state.transactions.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,10);
+      const ex=state.expenses.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,10);
+      document.getElementById('recentDebtTx').innerHTML=tx.length?`<table class="data"><thead><tr><th>Date</th><th>Account</th><th>Type</th><th class="num">Amount</th><th></th></tr></thead><tbody>${tx.map(t=>`<tr><td>${h(t.date)}</td><td>${h(t.debtId)}<div class="muted">${h((state.debts.find(d=>d.id===t.debtId)||{}).creditor||'')}</div></td><td>${h(t.type)}</td><td class="num money">${money(t.amount)}</td><td><button class="btn link small" type="button" onclick="deleteTx('${h(t.id)}')">Undo</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No debt updates yet.</div>';
+      document.getElementById('recentExpenses').innerHTML=ex.length?`<table class="data"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="num">Amount</th><th></th></tr></thead><tbody>${ex.map(e=>`<tr><td>${h(e.date)}</td><td>${h(e.description)}</td><td>${h(e.category)}</td><td class="num money">${money(e.amount)}</td><td><button class="btn link small" type="button" onclick="deleteExpense('${h(e.id)}')">Undo</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No expenses yet.</div>';
+    }
+
+    document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===btn.dataset.page));window.scrollTo({top:0,behavior:'smooth'})}));
+    document.getElementById('debtTxForm').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item={id:uid(),date:f.get('date'),debtId:f.get('debtId'),type:f.get('type'),amount:num(f.get('amount')),reference:String(f.get('reference')||''),notes:String(f.get('notes')||''),createdAt:new Date().toISOString()};const ok=await commitMutation('addTransaction',item,()=>state.transactions.push(item),'Debt update saved');if(ok){e.currentTarget.reset();document.getElementById('txDate').value=today();renderDebtSelect()}});
+    document.getElementById('expenseForm').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item={id:uid(),date:f.get('date'),category:f.get('category'),description:String(f.get('description')||''),amount:num(f.get('amount')),method:f.get('method'),reference:String(f.get('reference')||''),notes:String(f.get('notes')||''),createdAt:new Date().toISOString()};const ok=await commitMutation('addExpense',item,()=>state.expenses.push(item),'Expense saved');if(ok){e.currentTarget.reset();document.getElementById('expDate').value=today()}});
+
+    async function deleteTx(id){if(!confirm('Undo/delete this debt update?'))return;await commitMutation('deleteTransaction',{id},()=>{state.transactions=state.transactions.filter(x=>x.id!==id)},'Debt update removed')}
+    async function deleteExpense(id){if(!confirm('Undo/delete this expense?'))return;await commitMutation('deleteExpense',{id},()=>{state.expenses=state.expenses.filter(x=>x.id!==id)},'Expense removed')}
+    async function toggleBill(id){const b=state.bills.find(x=>x.id===id);if(!b)return;const target=b.status==='Paid'?'Unpaid':'Paid';await commitMutation('setBillStatus',{id,status:target},()=>{b.status=target},`Bill marked ${target}`)}
+
+    const dialog=document.getElementById('debtDialog');
+    function openDebtDialog(id=''){const d=id?state.debts.find(x=>x.id===id):null;document.getElementById('debtDialogTitle').textContent=d?'Edit Loan / Account':'Add Loan / Account';document.getElementById('editDebtId').value=d?.id||'';document.getElementById('debtScope').value=d?.scope||'Business';document.getElementById('debtType').value=d?.type||'Fixed Installment';document.getElementById('debtCreditor').value=d?.creditor||'';document.getElementById('debtOpening').value=d?.openingBalance??'';document.getElementById('debtDueAmount').value=d?.monthlyDue??'';document.getElementById('debtTerms').value=d?.terms??'';document.getElementById('debtDueDay').value=d?.dueDay??'';document.getElementById('debtNote').value=d?.note||'';dialog.showModal()}
+    function closeDebtDialog(){dialog.close()}
+    function nextDebtId(scope,type){const prefix=scope==='Household'?'HH':type==='Running Credit'?'CC':'BUS';const nums=state.debts.filter(d=>d.id.startsWith(prefix+'-')).map(d=>parseInt(d.id.split('-')[1],10)||0);return `${prefix}-${String(Math.max(0,...nums)+1).padStart(3,'0')}`}
+    document.getElementById('debtForm').addEventListener('submit',async e=>{e.preventDefault();const oldId=document.getElementById('editDebtId').value;const scope=document.getElementById('debtScope').value;const type=document.getElementById('debtType').value;const base={scope,type,creditor:document.getElementById('debtCreditor').value.trim(),openingBalance:num(document.getElementById('debtOpening').value),monthlyDue:num(document.getElementById('debtDueAmount').value),terms:document.getElementById('debtTerms').value?num(document.getElementById('debtTerms').value):null,dueDay:num(document.getElementById('debtDueDay').value),note:document.getElementById('debtNote').value.trim()};const existing=oldId?state.debts.find(x=>x.id===oldId):null;const item=existing?{...existing,...base,review:base.note?(existing.review||''):''}:{id:nextDebtId(scope,type),...base,review:''};const ok=await commitMutation('saveDebt',item,()=>{if(existing)Object.assign(existing,item);else state.debts.push(item)},oldId?'Account updated':'New account added');if(ok)closeDebtDialog()});
+
+    function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},0)}
+    function exportJson(){download(`TechGeekPH_Quick_Access_Backup_${today()}.json`,JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2),'application/json');toast('JSON backup exported')}
+    function csvCell(v){const s=String(v??'');return /[\",\n]/.test(s)?`\"${s.replace(/\"/g,'\"\"')}\"`:s}
+    function exportDebtCsv(){const head=['Debt ID','Scope','Creditor','Type','Monthly / Statement Due','Terms','Due Day','Opening Balance','Payments','New Borrowing / Charges','Current Balance','Review','Notes'];const lines=[head,state.debts.map(d=>{const tx=state.transactions.filter(t=>t.debtId===d.id);return [d.id,d.scope,d.creditor,d.type,d.monthlyDue,d.terms??'',d.dueDay,d.openingBalance,sum(tx.filter(t=>t.type==='Payment'),t=>t.amount),sum(tx.filter(t=>t.type!=='Payment'),t=>t.amount),balance(d),d.review,d.note]})].flat().map(r=>r.map(csvCell).join(','));download(`TechGeekPH_Debts_${today()}.csv`,lines.join('\n'),'text/csv;charset=utf-8')}
+    function exportExpenseCsv(){const head=['Date','Category','Description','Amount','Payment Method','Reference','Notes'];const lines=[head,...state.expenses.map(e=>[e.date,e.category,e.description,e.amount,e.method,e.reference,e.notes])].map(r=>r.map(csvCell).join(','));download(`TechGeekPH_Expenses_${today()}.csv`,lines.join('\n'),'text/csv;charset=utf-8')}
+    async function importJson(){if(remoteReady())return alert('For safety, switch to Local Mode before importing a JSON backup. Import does not overwrite Google Sheets automatically.');const file=document.getElementById('importFile').files[0];if(!file)return alert('Choose a JSON backup first.');try{const parsed=JSON.parse(await file.text());if(!Array.isArray(parsed.debts)||!Array.isArray(parsed.bills)||!Array.isArray(parsed.transactions)||!Array.isArray(parsed.expenses))throw new Error('Invalid backup structure');if(!confirm('Replace current local tracker data with this backup?'))return;state=parsed;saveLocal('Backup imported locally')}catch(err){alert('Could not import this file: '+err.message)}}
+    async function resetToSource(){const msg=remoteReady()?'Reset the V2 tracker to its private starting dataset? This removes saved V2 payments, new charges and expenses. Export a backup first if needed.':'Clear all data stored by this tracker in Local Mode? Export a backup first if needed.';if(!confirm(msg))return;const fresh=seedState();await commitMutation('resetData',{confirm:'RESET'},()=>{state=fresh},remoteReady()?'Reset to source data':'Local tracker cleared')}
+
+    document.getElementById('txDate').value=today();document.getElementById('expDate').value=today();renderAll();if(remoteReady())syncFromSheets(true);
+  </script>
+</body>
+</html>
