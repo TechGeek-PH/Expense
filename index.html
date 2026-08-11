@@ -4,344 +4,162 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0b1f3a" />
-  <title>TechGeekPH Quick Access – Debt & Expense Tracker</title>
-  <style>
-    :root{--navy:#0b1f3a;--blue:#155eef;--blue2:#0f46b9;--sky:#eaf2ff;--ink:#172b4d;--muted:#667085;--line:#dce5f2;--soft:#f6f8fc;--white:#fff;--green:#16803a;--greenbg:#eaf7ee;--amber:#b54708;--amberbg:#fff4e5;--red:#b42318;--redbg:#fdecec;--shadow:0 12px 30px rgba(20,40,80,.08)}
-    *{box-sizing:border-box} body{margin:0;background:#f4f7fb;color:var(--ink);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif} button,input,select,textarea{font:inherit} button{cursor:pointer}
-    .top{background:linear-gradient(125deg,var(--navy),#103b74);color:#fff}.top-inner{max-width:1320px;margin:auto;padding:22px 22px 18px;display:flex;gap:18px;justify-content:space-between;align-items:flex-start}.brand{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#bad2ff}.top h1{margin:3px 0 5px;font-size:28px;line-height:1.15}.top p{margin:0;color:#d9e6fb;max-width:760px}.status{display:flex;gap:8px;align-items:center;white-space:nowrap;background:#ffffff12;border:1px solid #ffffff28;border-radius:999px;padding:8px 11px;font-size:12px}.dot{width:8px;height:8px;background:#69db91;border-radius:50%}
-    .nav-wrap{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}.nav{max-width:1320px;margin:auto;padding:9px 18px;display:flex;gap:6px;overflow:auto}.nav button{border:0;background:transparent;color:#52627a;padding:9px 13px;border-radius:10px;font-weight:700;white-space:nowrap}.nav button.active{background:var(--sky);color:var(--blue)}
-    main{max-width:1320px;margin:0 auto;padding:22px}.notice{background:var(--amberbg);color:#7a3c06;border:1px solid #f5c77a;border-radius:14px;padding:11px 13px;margin-bottom:16px}.notice strong{color:var(--amber)}
-    .page{display:none}.page.active{display:block}.page-title{display:flex;gap:12px;justify-content:space-between;align-items:flex-end;margin:4px 0 14px}.page-title h2{margin:0;font-size:21px}.page-title p{margin:2px 0 0;color:var(--muted)}
-    .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:var(--shadow)}.card .label{font-size:12px;font-weight:700;color:var(--muted);min-height:34px}.card .value{font-size:25px;font-weight:850;letter-spacing:-.02em;margin-top:4px}.card .sub{font-size:11px;color:var(--muted);margin-top:3px}.card.warn{background:#fffaf2;border-color:#f6d394}.card.good{background:#f5fbf7;border-color:#ccebd5}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}.panel-head h3{font-size:15px;margin:0}.panel-head span{font-size:12px;color:var(--muted)}.panel-body{padding:15px}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.step{background:var(--soft);border:1px solid var(--line);border-radius:13px;padding:13px}.step b{display:block;color:var(--blue);font-size:12px;margin-bottom:5px}.step span{font-weight:750}.step p{margin:5px 0 0;color:var(--muted);font-size:12px}
-    form{margin:0}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.wide{grid-column:1/-1}.field label{font-size:11px;font-weight:800;color:#52627a}.field input,.field select,.field textarea{width:100%;border:1px solid #cfd9e8;border-radius:10px;padding:10px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #155eef18}.field textarea{min-height:76px;resize:vertical}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{border:1px solid transparent;border-radius:10px;padding:9px 12px;font-weight:800}.btn.primary{background:var(--blue);color:#fff}.btn.primary:hover{background:var(--blue2)}.btn.secondary{background:#fff;border-color:#cfd9e8;color:var(--ink)}.btn.danger{background:var(--redbg);color:var(--red);border-color:#f2c5c0}.btn.small{padding:5px 8px;font-size:11px}.btn.link{background:transparent;color:var(--blue);padding:5px 7px}
-    .table-wrap{overflow:auto}.data{border-collapse:collapse;width:100%;min-width:760px}.data th,.data td{padding:10px 9px;border-bottom:1px solid #edf1f7;text-align:left;vertical-align:top}.data th{font-size:11px;color:#586a84;background:#f8faff;position:sticky;top:0}.data td.num,.data th.num{text-align:right}.data tr:last-child td{border-bottom:0}.money{font-variant-numeric:tabular-nums;white-space:nowrap}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:850;white-space:nowrap}.pill.fixed{background:var(--sky);color:var(--blue)}.pill.running{background:#f2ecff;color:#6941c6}.pill.paid{background:var(--greenbg);color:var(--green)}.pill.unpaid,.pill.review{background:var(--amberbg);color:var(--amber)}.pill.ok{background:var(--greenbg);color:var(--green)}
-    .empty{padding:18px;text-align:center;color:var(--muted)}.summary-line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #edf1f7}.summary-line:last-child{border-bottom:0}.summary-line b{font-variant-numeric:tabular-nums}
-    .backup-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.backup-box{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fff}.backup-box h3{margin:0 0 6px;font-size:15px}.backup-box p{margin:0 0 12px;color:var(--muted);font-size:12px}.source-link{word-break:break-all;color:var(--blue);text-decoration:none}.bill-toolbar{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}.bill-toolbar .month-field{min-width:165px}.bill-tools-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
-    dialog{border:0;border-radius:18px;padding:0;max-width:620px;width:calc(100% - 24px);box-shadow:0 30px 90px #102a56aa}dialog::backdrop{background:#0b1f3ab5}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid var(--line)}.dialog-head h3{margin:0}.dialog-body{padding:17px}.icon-btn{border:0;background:var(--soft);width:32px;height:32px;border-radius:9px;color:var(--ink)}
-    .footer{max-width:1320px;margin:0 auto 24px;padding:0 22px;color:#7a8799;font-size:11px}.toast{position:fixed;right:18px;bottom:18px;background:var(--navy);color:#fff;border-radius:11px;padding:10px 13px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:50}.toast.show{opacity:1;transform:none}
-    @media(max-width:960px){.cards{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.top-inner{flex-direction:column}.status{align-self:flex-start}}
-    @media(max-width:620px){main{padding:14px}.top-inner{padding:18px 15px}.top h1{font-size:23px}.cards{grid-template-columns:1fr 1fr;gap:8px}.card{padding:12px}.card .value{font-size:20px}.steps,.backup-grid,.form-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}.page-title{align-items:flex-start;flex-direction:column}.bill-toolbar{width:100%}.bill-toolbar .month-field{flex:1;min-width:150px}.data th,.data td{padding:8px 7px}.nav{padding-left:10px}.notice{font-size:12px}}
-    @media print{.nav-wrap,.actions,.status,.notice,.btn,.footer{display:none!important}.page{display:none!important}#dashboard.page{display:block!important}body{background:#fff}main{max-width:none;padding:0}.card,.panel{box-shadow:none}}
-  </style>
+  <title>TechGeekPH Financial Control Center</title>
+  <link rel="stylesheet" href="styles.css?v=3.0" />
 </head>
 <body>
-  <header class="top">
-    <div class="top-inner">
-      <div>
-        <div class="brand">TechGeekPH Solutions &amp; Services Inc.</div>
-        <h1>Business Debt &amp; Expense Quick Access</h1>
-        <p>One place for fixed loans, running/card balances, monthly bills, and daily business expenses.</p>
-      </div>
-      <div class="status"><span class="dot"></span><span id="saveStatus">Local auto-save ready</span></div>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">TechGeekPH Solutions &amp; Services Inc.</div>
+      <h1>Financial Control Center</h1>
+      <p>Debt, bills and expense tracing in one place.</p>
     </div>
+    <button id="connectionButton" class="connection-pill" type="button" title="Connection setup">
+      <span class="dot"></span><span id="saveStatus">Checking Google Sheets…</span>
+    </button>
   </header>
 
-  <div class="nav-wrap">
-    <nav class="nav" aria-label="Main sections">
-      <button class="active" data-page="dashboard">Dashboard</button>
-      <button data-page="quick">Quick Update</button>
-      <button data-page="debts">Debts</button>
-      <button data-page="bills">Bills</button>
-      <button data-page="backup">Settings</button>
-    </nav>
-  </div>
+  <nav class="nav" aria-label="Financial sections">
+    <button class="active" data-page="dashboard">Dashboard</button>
+    <button data-page="expenses">Expenses</button>
+    <button data-page="debts">Debt &amp; Credit</button>
+    <button data-page="bills">Bills</button>
+  </nav>
 
   <main>
-    <div id="modeNotice" class="notice"><strong>One-time setup:</strong> Open Settings and connect your Apps Script Web App URL + private Sync Key. After that, saving and refreshing are automatic.</div>
+    <div id="modeNotice" class="notice">Connecting to Google Sheets…</div>
 
     <section id="dashboard" class="page active">
-      <div class="page-title"><div><h2>Dashboard</h2><p>Live totals from your saved entries.</p></div><button class="btn secondary" type="button" onclick="window.print()">Print Summary</button></div>
+      <div class="page-heading">
+        <div><h2>Financial Dashboard</h2><p>Live view of obligations and cash-out records.</p></div>
+        <button class="btn secondary" id="syncNowBtn" type="button">Refresh from Sheets</button>
+      </div>
       <div id="dashboardCards" class="cards"></div>
-      <div class="panel" style="margin-bottom:14px">
-        <div class="panel-head"><h3>Fastest update routine</h3><span>Recommended workflow</span></div>
-        <div class="panel-body"><div class="steps">
-          <div class="step"><b>1 • PAYMENT</b><span>Log every loan/card payment</span><p>Quick Update → Debt ID → Payment. Balance decreases automatically.</p></div>
-          <div class="step"><b>2 • NEW CHARGE</b><span>Log new borrowing/charges</span><p>Quick Update → New Borrowing / Charge. Balance increases automatically.</p></div>
-          <div class="step"><b>3 • EXPENSE</b><span>Record daily business expense</span><p>Do not record the same loan payment again as an expense.</p></div>
-          <div class="step"><b>4 • MONTHLY</b><span>Update card statement due</span><p>Debts → Edit. Change Statement Due when the new statement arrives.</p></div>
-        </div></div>
+      <div class="grid two">
+        <article class="panel">
+          <div class="panel-head"><div><h3>Expense breakdown</h3><span id="expenseBreakdownLabel">Current month</span></div></div>
+          <div id="expenseBreakdown" class="panel-body"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><h3>Upcoming business obligations</h3><span>Sorted by due day</span></div></div>
+          <div id="upcomingObligations" class="table-wrap"></div>
+        </article>
       </div>
-      <div class="grid-2">
-        <div class="panel"><div class="panel-head"><h3>Upcoming active debts</h3><span>Sorted by due day</span></div><div class="table-wrap" id="upcomingDebts"></div></div>
-        <div class="panel"><div class="panel-head"><h3>Current bill status</h3><span id="billMonthLabel">August 2026</span></div><div class="panel-body" id="billSummary"></div></div>
-      </div>
+      <article class="panel space-top">
+        <div class="panel-head"><div><h3>Latest expenses</h3><span>Newest cash-out records</span></div><button class="btn link" data-go="expenses">View all</button></div>
+        <div id="latestExpenses" class="table-wrap"></div>
+      </article>
     </section>
 
-    <section id="quick" class="page">
-      <div class="page-title"><div><h2>Quick Update</h2><p>This is the page you should use most often.</p></div></div>
-      <div class="grid-2">
-        <div class="panel">
-          <div class="panel-head"><h3>Debt / loan movement</h3><span>Payment or new borrowing</span></div>
+    <section id="expenses" class="page">
+      <div class="page-heading"><div><h2>Expense Tracing</h2><p>Track gas, maintenance, cash advances, payroll, materials and every business cash-out.</p></div></div>
+      <div class="grid two">
+        <article class="panel">
+          <div class="panel-head"><div><h3>Add expense</h3><span>Use this only when entering manually</span></div></div>
           <div class="panel-body">
-            <form id="debtTxForm">
-              <div class="form-grid">
-                <div class="field"><label for="txDate">Date</label><input id="txDate" name="date" type="date" required /></div>
-                <div class="field"><label for="txDebt">Debt ID</label><select id="txDebt" name="debtId" required></select></div>
-                <div class="field"><label for="txType">Update type</label><select id="txType" name="type" required><option>Payment</option><option>New Borrowing / Charge</option></select></div>
-                <div class="field"><label for="txAmount">Amount</label><input id="txAmount" name="amount" type="number" min="0.01" step="0.01" required /></div>
-                <div class="field"><label for="txReference">Reference</label><input id="txReference" name="reference" placeholder="OR / ref / optional" /></div>
-                <div class="field"><label for="txNotes">Notes</label><input id="txNotes" name="notes" placeholder="Optional" /></div>
-              </div>
-              <div class="actions"><button class="btn primary" type="submit">Save Debt Update</button></div>
+            <form id="expenseForm" class="form-grid">
+              <label>Date<input id="expDate" type="date" required /></label>
+              <label>Category<select id="expCategory" required>
+                <option>Gas / Fuel</option><option>Vehicle Maintenance</option><option>Cash Advance</option><option>Food Allowance</option>
+                <option>Payroll</option><option>Router / ONU</option><option>Cable / Materials</option><option>Tools / Equipment</option>
+                <option>ISP / Uplink</option><option>Meralco / Utilities</option><option>Rent</option><option>Repairs / Maintenance</option>
+                <option>Referral Fee</option><option>Transport / Shipping</option><option>Software / Online</option><option>Marketing</option>
+                <option>Project Expense</option><option>Taxes / Fees</option><option>Supplies</option><option>Other</option>
+              </select></label>
+              <label class="wide">Description<input id="expDescription" maxlength="300" placeholder="Example: Gas - Chariot service vehicle" required /></label>
+              <label>Amount<input id="expAmount" type="number" min="0.01" step="0.01" required /></label>
+              <label>Payment method<select id="expMethod"><option>Cash</option><option>GCash</option><option>BPI</option><option>GoTyme</option><option>UnionBank</option><option>MariBank</option><option>ShopeePay</option><option>Credit Card</option><option>Other</option></select></label>
+              <label>Reference<input id="expReference" maxlength="150" placeholder="OR / ref / optional" /></label>
+              <label>Notes<input id="expNotes" maxlength="500" placeholder="Employee, vehicle, project, etc." /></label>
+              <div class="wide actions"><button class="btn primary" type="submit">Save Expense</button></div>
             </form>
+            <p class="helper"><strong>Cash Advance:</strong> counted as cash-out, but excluded from Operating Expense so it will not overstate business OPEX.</p>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><div><h3>Expense summary</h3><span>Filtered totals by category</span></div></div>
+          <div id="expenseSummary" class="panel-body"></div>
+        </article>
+      </div>
+
+      <article class="panel space-top">
+        <div class="panel-head filter-head">
+          <div><h3>Expense ledger</h3><span id="expenseCountLabel"></span></div>
+          <div class="filters">
+            <input id="expenseMonth" type="month" aria-label="Expense month" />
+            <select id="expenseCategoryFilter"><option value="">All categories</option></select>
+            <input id="expenseSearch" type="search" placeholder="Search description / notes" />
+            <button id="exportExpensesBtn" class="btn secondary" type="button">Export CSV</button>
           </div>
         </div>
-        <div class="panel">
-          <div class="panel-head"><h3>Daily business expense</h3><span>Operating expenses only</span></div>
-          <div class="panel-body">
-            <form id="expenseForm">
-              <div class="form-grid">
-                <div class="field"><label for="expDate">Date</label><input id="expDate" name="date" type="date" required /></div>
-                <div class="field"><label for="expCategory">Category</label><select id="expCategory" name="category" required><option>Supplies</option><option>Utilities</option><option>Transport</option><option>Meals</option><option>Payroll</option><option>Rent</option><option>Software / Online</option><option>Marketing</option><option>Repairs</option><option>Other</option></select></div>
-                <div class="field wide"><label for="expDescription">Description</label><input id="expDescription" name="description" required placeholder="What was paid for?" /></div>
-                <div class="field"><label for="expAmount">Amount</label><input id="expAmount" name="amount" type="number" min="0.01" step="0.01" required /></div>
-                <div class="field"><label for="expMethod">Payment method</label><select id="expMethod" name="method"><option>Cash</option><option>GCash</option><option>Maya</option><option>Bank Transfer</option><option>Card</option><option>Other</option></select></div>
-                <div class="field"><label for="expReference">Reference / OR</label><input id="expReference" name="reference" placeholder="Optional" /></div>
-                <div class="field"><label for="expNotes">Notes</label><input id="expNotes" name="notes" placeholder="Optional" /></div>
-              </div>
-              <div class="actions"><button class="btn primary" type="submit">Save Expense</button></div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="grid-2" style="margin-top:14px">
-        <div class="panel"><div class="panel-head"><h3>Recent debt updates</h3><span>Newest first</span></div><div class="table-wrap" id="recentDebtTx"></div></div>
-        <div class="panel"><div class="panel-head"><h3>Recent expenses</h3><span>Newest first</span></div><div class="table-wrap" id="recentExpenses"></div></div>
-      </div>
+        <div id="expenseTable" class="table-wrap"></div>
+      </article>
     </section>
 
     <section id="debts" class="page">
-      <div class="page-title"><div><h2>Debt Master</h2><p>Fixed installment and running/card accounts in one list.</p></div><button class="btn primary" type="button" onclick="openDebtDialog()">+ Add Loan / Account</button></div>
-      <div class="notice"><strong>Running Credit:</strong> payments/new charges change Current Balance automatically. When a new card statement arrives, use Edit to update only “Monthly / Statement Due”.</div>
-      <div class="panel"><div class="table-wrap" id="debtTable"></div></div>
+      <div class="page-heading"><div><h2>Debt &amp; Credit</h2><p>Fixed loans, running credit, payments and new borrowing.</p></div><button id="openDebtDialog" class="btn secondary" type="button">Add / Edit Debt</button></div>
+      <div class="grid two">
+        <article class="panel"><div class="panel-head"><div><h3>Record debt movement</h3><span>Payment or new charge</span></div></div><div class="panel-body">
+          <form id="debtTxForm" class="form-grid">
+            <label>Date<input id="txDate" type="date" required /></label>
+            <label>Debt ID<select id="txDebt" required></select></label>
+            <label>Type<select id="txType"><option>Payment</option><option>New Borrowing / Charge</option></select></label>
+            <label>Amount<input id="txAmount" type="number" min="0.01" step="0.01" required /></label>
+            <label>Reference<input id="txReference" placeholder="Optional" /></label>
+            <label>Notes<input id="txNotes" placeholder="Optional" /></label>
+            <div class="wide actions"><button class="btn primary" type="submit">Save Debt Update</button></div>
+          </form>
+        </div></article>
+        <article class="panel"><div class="panel-head"><div><h3>Recent debt movements</h3><span>Latest 10</span></div></div><div id="recentDebtTx" class="table-wrap"></div></article>
+      </div>
+      <article class="panel space-top"><div class="panel-head"><div><h3>Debt master</h3><span>Current balances calculated from transactions</span></div></div><div id="debtTable" class="table-wrap"></div></article>
     </section>
 
     <section id="bills" class="page">
-      <div class="page-title">
-        <div><h2>Current Bills</h2><p>Choose a month, then add or edit the bills for that month.</p></div>
-        <div class="bill-toolbar">
-          <button class="btn secondary" type="button" onclick="shiftBillMonth(-1)">‹ Prev</button>
-          <div class="field month-field"><label for="billMonthFilter">Billing month</label><input id="billMonthFilter" type="month" onchange="setBillMonth(this.value)" /></div>
-          <button class="btn secondary" type="button" onclick="shiftBillMonth(1)">Next ›</button>
-          <button class="btn primary" type="button" onclick="openBillDialog()">+ Add Bill</button>
-        </div>
-      </div>
-      <div class="notice"><strong>No double-counting:</strong> running-credit bill entries may also exist in Debt Master. Bills are the cash-due checklist, not an extra debt total.</div>
-      <div class="bill-tools-row"><button class="btn secondary" type="button" onclick="copyPreviousMonth()">Copy Previous Month</button><span id="billMonthHelp" class="muted">Recurring bills can be copied into an empty month.</span></div>
-      <div class="panel"><div class="table-wrap" id="billsTable"></div></div>
-    </section>
-
-    <section id="backup" class="page">
-      <div class="page-title"><div><h2>Settings</h2><p>Connect once. After that, the tracker saves and refreshes automatically.</p></div></div>
-      <div class="backup-grid">
-        <div class="backup-box" style="grid-column:1/-1"><h3>Google Sheets Auto-Sync</h3><p>Paste the Apps Script Web App <b>/exec</b> URL and private Sync Key once. Every change saves immediately; the page also refreshes automatically from Google Sheets while it is open. The key stays only in this browser.</p><div class="form-grid"><div class="field"><label for="apiUrl">Apps Script Web App URL</label><input id="apiUrl" type="url" autocomplete="off" spellcheck="false" placeholder="https://script.google.com/macros/s/.../exec" /></div><div class="field"><label for="syncKey">Private Sync Key</label><input id="syncKey" type="password" autocomplete="off" spellcheck="false" placeholder="Paste Sync Key here" /></div></div><div class="actions"><button class="btn primary" type="button" onclick="connectSheets()">Save Connection</button><button class="btn secondary" type="button" onclick="disconnectSheets()">Use Local Mode</button></div><div id="connectionInfo" class="muted" style="margin-top:8px">Not connected.</div></div>
-        <div class="backup-box"><h3>Automatic backup</h3><p>Google Sheets is the main saved copy and this browser keeps a local cache automatically. No manual Sync or Export Backup is required for normal use.</p></div>
-        <div class="backup-box"><h3>Private backend</h3><p>Your Spreadsheet ID and starting financial data stay in <code>Code.gs</code>, not in this public GitHub page.</p></div>
-        <div class="backup-box"><h3>Reset tracker</h3><p>When connected, this restores the starting V2 dataset in Google Sheets. In Local Mode, it clears the local tracker data.</p><button class="btn danger" type="button" onclick="resetToSource()">Reset Tracker</button></div>
-      </div>
+      <div class="page-heading"><div><h2>Monthly Bills</h2><p>Operating bills and current payment status.</p></div><button id="openBillDialog" class="btn secondary" type="button">Add Bill</button></div>
+      <div class="toolbar"><label>Billing month<input id="billMonth" type="month" /></label><button id="copyPrevBills" class="btn secondary" type="button">Copy Previous Month</button></div>
+      <div id="billCards" class="cards compact"></div>
+      <article class="panel"><div class="panel-head"><div><h3>Bill ledger</h3><span id="billCountLabel"></span></div></div><div id="billTable" class="table-wrap"></div></article>
     </section>
   </main>
 
-  <footer class="footer">TechGeekPH Quick Access V2.2 • Monthly editable bills • GitHub Pages + private Google Sheets sync.</footer>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <dialog id="debtDialog">
-    <div class="dialog-head"><h3 id="debtDialogTitle">Add Loan / Account</h3><button class="icon-btn" type="button" aria-label="Close" onclick="closeDebtDialog()">✕</button></div>
-    <div class="dialog-body">
-      <form id="debtForm">
-        <input id="editDebtId" type="hidden" />
-        <div class="form-grid">
-          <div class="field"><label for="debtScope">Scope</label><select id="debtScope" required><option>Business</option><option>Household</option></select></div>
-          <div class="field"><label for="debtType">Type</label><select id="debtType" required><option>Fixed Installment</option><option>Running Credit</option></select></div>
-          <div class="field wide"><label for="debtCreditor">Creditor</label><input id="debtCreditor" required /></div>
-          <div class="field"><label for="debtOpening">Opening balance</label><input id="debtOpening" type="number" min="0" step="0.01" required /></div>
-          <div class="field"><label for="debtDueAmount">Monthly / Statement Due</label><input id="debtDueAmount" type="number" min="0" step="0.01" required /></div>
-          <div class="field"><label for="debtTerms">Terms (months)</label><input id="debtTerms" type="number" min="1" step="1" placeholder="Optional for cards" /></div>
-          <div class="field"><label for="debtDueDay">Due day</label><input id="debtDueDay" type="number" min="1" max="31" step="1" required /></div>
-          <div class="field wide"><label for="debtNote">Notes / action</label><textarea id="debtNote" placeholder="Optional"></textarea></div>
-        </div>
-        <div class="actions"><button class="btn primary" type="submit">Save Account</button><button class="btn secondary" type="button" onclick="closeDebtDialog()">Cancel</button></div>
-      </form>
-    </div>
+  <dialog id="connectionDialog">
+    <form method="dialog" class="dialog-card" id="connectionForm">
+      <div class="dialog-head"><div><h3>Private Google Sheets Connection</h3><p>No Settings page is shown in the tracker. This opens only when needed.</p></div><button value="cancel" class="icon-btn" aria-label="Close">×</button></div>
+      <div class="dialog-body form-grid">
+        <label class="wide">Apps Script Web App /exec URL<input id="apiUrl" type="url" autocomplete="off" placeholder="https://script.google.com/macros/s/.../exec" /></label>
+        <label class="wide">Private Sync Key<input id="syncKey" type="password" autocomplete="off" placeholder="Private key" /></label>
+        <div class="wide actions"><button id="saveConnectionBtn" class="btn primary" type="button">Save &amp; Verify</button><button class="btn secondary" value="cancel">Close</button></div>
+        <p id="connectionInfo" class="wide helper"></p>
+      </div>
+    </form>
   </dialog>
 
-  <dialog id="billDialog">
-    <div class="dialog-head"><h3 id="billDialogTitle">Add Monthly Bill</h3><button class="icon-btn" type="button" aria-label="Close" onclick="closeBillDialog()">✕</button></div>
-    <div class="dialog-body">
-      <form id="billForm">
-        <input id="editBillId" type="hidden" />
-        <div class="form-grid">
-          <div class="field"><label for="billMonth">Billing month</label><input id="billMonth" type="month" required /></div>
-          <div class="field"><label for="billStatus">Status</label><select id="billStatus" required><option>Unpaid</option><option>Paid</option></select></div>
-          <div class="field wide"><label for="billBiller">Biller / Account</label><input id="billBiller" required placeholder="e.g. Rent, ISP, card, loan" /></div>
-          <div class="field"><label for="billAmount">Amount</label><input id="billAmount" type="number" min="0.01" step="0.01" required /></div>
-          <div class="field"><label for="billDueDay">Due day</label><input id="billDueDay" type="number" min="1" max="31" step="1" required /></div>
-          <div class="field"><label for="billTerms">Terms / Installment</label><input id="billTerms" placeholder="e.g. 4/12 or -" /></div>
-          <div class="field"><label for="billCategory">Category</label><input id="billCategory" list="billCategoryOptions" required placeholder="Operating Bill" /><datalist id="billCategoryOptions"><option value="Operating Bill"></option><option value="Debt Payment"></option><option value="Running Credit"></option><option value="Utilities"></option><option value="Rent"></option><option value="Other"></option></datalist></div>
-          <div class="field wide"><label for="billDebtId">Related Debt (optional)</label><select id="billDebtId"><option value="">No debt link</option></select></div>
-        </div>
-        <div class="actions"><button class="btn primary" type="submit">Save Bill</button><button class="btn secondary" type="button" onclick="closeBillDialog()">Cancel</button><button id="billDeleteBtn" class="btn danger" type="button" onclick="deleteBillFromDialog()" hidden>Delete Bill</button></div>
-      </form>
+  <dialog id="debtDialog"><form method="dialog" class="dialog-card" id="debtForm">
+    <div class="dialog-head"><div><h3>Add / Edit Debt</h3><p>Opening balance is the starting balance used for calculations.</p></div><button value="cancel" class="icon-btn">×</button></div>
+    <div class="dialog-body form-grid">
+      <label>Debt ID<input id="debtId" required /></label><label>Scope<select id="debtScope"><option>Business</option><option>Household</option></select></label>
+      <label class="wide">Creditor<input id="debtCreditor" required /></label><label>Type<select id="debtType"><option>Fixed Installment</option><option>Running Credit</option></select></label>
+      <label>Monthly / Statement Due<input id="debtMonthlyDue" type="number" min="0" step="0.01" required /></label><label>Terms (months)<input id="debtTerms" type="number" min="1" step="1" /></label>
+      <label>Due Day<input id="debtDueDay" type="number" min="1" max="31" required /></label><label>Opening Balance<input id="debtOpeningBalance" type="number" min="0" step="0.01" required /></label>
+      <label>Review<input id="debtReview" placeholder="VERIFY / OK / optional" /></label><label>Notes<input id="debtNote" /></label>
+      <div class="wide actions"><button id="saveDebtBtn" class="btn primary" type="button">Save Debt</button><button class="btn secondary" value="cancel">Cancel</button></div>
     </div>
-  </dialog>
+  </form></dialog>
 
-  <script>
-    'use strict';
-    const STORAGE_KEY='techgeekph_finance_v2';
-    const API_URL_KEY='techgeekph_v2_apps_script_url';
-    const SYNC_KEY_STORAGE='techgeekph_v2_sync_key';
-    const BILL_MONTH_STORAGE='techgeekph_v2_bill_month';
-    const moneyFmt=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',minimumFractionDigits:2});
-    const money=n=>moneyFmt.format(Number(n)||0);
-    const num=v=>Number(v)||0;
-    const h=v=>String(v??'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
-    const uid=()=>`${Date.now().toString(36)}-${Math.random().toString(36).slice(2,9)}`;
-    const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+  <dialog id="billDialog"><form method="dialog" class="dialog-card" id="billForm">
+    <div class="dialog-head"><div><h3>Add / Edit Bill</h3><p>For recurring operating bills and monthly obligations.</p></div><button value="cancel" class="icon-btn">×</button></div>
+    <div class="dialog-body form-grid">
+      <input id="billId" type="hidden" /><label>Billing Month<input id="billEditMonth" type="month" required /></label><label>Biller<input id="billBiller" required /></label>
+      <label>Amount<input id="billAmount" type="number" min="0.01" step="0.01" required /></label><label>Due Day<input id="billDueDay" type="number" min="1" max="31" required /></label>
+      <label>Terms<input id="billTerms" placeholder="Monthly / optional" /></label><label>Status<select id="billStatus"><option>Unpaid</option><option>Paid</option></select></label>
+      <label>Category<input id="billCategory" value="Operating Bill" /></label><label>Related Debt ID<select id="billDebtId"><option value="">None</option></select></label>
+      <div class="wide actions"><button id="saveBillBtn" class="btn primary" type="button">Save Bill</button><button class="btn secondary" value="cancel">Cancel</button></div>
+    </div>
+  </form></dialog>
 
-    function seedState(){return {
-      version:2.2,sourceAsOf:'',billingMonth:'',savedAt:null,
-      debts:[],transactions:[],expenses:[],bills:[]
-    }}
-
-    let storageAvailable=true;
-    let syncBusy=false;
-    function normalizeState(value){const s=value&&typeof value==='object'?value:seedState();s.debts=Array.isArray(s.debts)?s.debts:[];s.transactions=Array.isArray(s.transactions)?s.transactions:[];s.expenses=Array.isArray(s.expenses)?s.expenses:[];s.bills=Array.isArray(s.bills)?s.bills:[];const legacyMonth=/^\d{4}-(0[1-9]|1[0-2])$/.test(String(s.billingMonth||''))?String(s.billingMonth):'2026-08';s.bills=s.bills.map(b=>({...b,billingMonth:/^\d{4}-(0[1-9]|1[0-2])$/.test(String(b.billingMonth||''))?String(b.billingMonth):legacyMonth}));return s}
-    function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);return normalizeState(raw?JSON.parse(raw):seedState())}catch(e){storageAvailable=false;return seedState()}}
-    let state=loadState();
-    const cloneState=()=>JSON.parse(JSON.stringify(state));
-    function cacheState(){state.savedAt=state.savedAt||new Date().toISOString();try{if(storageAvailable)localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){storageAvailable=false}}
-    function getStored(key){try{return storageAvailable?(localStorage.getItem(key)||''):''}catch(e){storageAvailable=false;return ''}}
-    function setStored(key,value){try{if(storageAvailable)localStorage.setItem(key,value)}catch(e){storageAvailable=false}}
-    function removeStored(key){try{if(storageAvailable)localStorage.removeItem(key)}catch(e){storageAvailable=false}}
-    function apiConfig(){return {url:getStored(API_URL_KEY).trim(),key:getStored(SYNC_KEY_STORAGE).trim()}}
-    function remoteReady(){const c=apiConfig();return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(c.url)&&c.key.length>=20}
-    function updateSaveStatus(){const el=document.getElementById('saveStatus');if(syncBusy){el.textContent='Syncing with Google Sheets…';return}if(remoteReady()){el.textContent=state.savedAt?'Google Sheets • '+new Date(state.savedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'Google Sheets connected';return}el.textContent=storageAvailable?(state.savedAt?'Local mode • '+new Date(state.savedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'Local mode ready'):'Local storage unavailable • export backups'}
-    function updateConnectionUI(){const cfg=apiConfig();const urlEl=document.getElementById('apiUrl'),keyEl=document.getElementById('syncKey'),info=document.getElementById('connectionInfo'),notice=document.getElementById('modeNotice');if(urlEl&&document.activeElement!==urlEl)urlEl.value=cfg.url;if(keyEl&&document.activeElement!==keyEl)keyEl.value=cfg.key;if(remoteReady()){info.textContent='Auto-sync ON • Changes save immediately • Background refresh every 60 seconds while this page is open.';notice.innerHTML='<strong>Auto-sync ON:</strong> Payments, new borrowing, expenses, debt edits, monthly bills and status changes save automatically to Google Sheets.'}else{info.textContent='Not connected. Local-only mode is active.';notice.innerHTML='<strong>One-time setup:</strong> Open Settings and save your Apps Script Web App URL + private Sync Key. After that, saving and refreshing are automatic.'}}
-
-    function apiCall(action,payload={}){
-      const cfg=apiConfig();
-      if(!remoteReady())return Promise.reject(new Error('Google Sheets connection is not configured.'));
-      return new Promise((resolve,reject)=>{
-        const callback='__tgcb_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8);
-        const script=document.createElement('script');
-        let done=false;
-        const cleanup=()=>{if(done)return;done=true;clearTimeout(timer);try{delete window[callback]}catch(e){window[callback]=undefined}script.remove()};
-        const timer=setTimeout(()=>{cleanup();reject(new Error('Google Sheets sync timed out. Check the Web App deployment and internet connection.'))},20000);
-        window[callback]=response=>{cleanup();if(!response||response.ok!==true){reject(new Error(response?.error||'Google Sheets returned an error.'));return}resolve(response)};
-        script.onerror=()=>{cleanup();reject(new Error('Could not reach the Apps Script Web App. Check the /exec URL and deployment access.'))};
-        const url=new URL(cfg.url);url.searchParams.set('action',action);url.searchParams.set('key',cfg.key);url.searchParams.set('callback',callback);url.searchParams.set('t',String(Date.now()));if(payload&&Object.keys(payload).length)url.searchParams.set('payload',JSON.stringify(payload));script.src=url.toString();document.head.appendChild(script);
-      });
-    }
-
-    async function connectSheets(){
-      const url=document.getElementById('apiUrl').value.trim();
-      const key=document.getElementById('syncKey').value.trim();
-      if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(url))return alert('Paste the Apps Script Web App /exec URL.');
-      if(key.length<20)return alert('Paste the private Sync Key from setupV2().');
-      setStored(API_URL_KEY,url);setStored(SYNC_KEY_STORAGE,key);updateConnectionUI();
-      await syncFromSheets();
-    }
-
-    async function syncFromSheets(silent=false){
-      if(!remoteReady()){if(!silent)alert('Google Sheets is not connected yet. Add the Web App URL and Sync Key first.');return false}
-      syncBusy=true;updateSaveStatus();
-      try{const res=await apiCall('getAppData');state=normalizeState(res.data);cacheState();renderAll();if(!silent)toast('Synced from Google Sheets');return true}
-      catch(err){if(!silent)alert('Sync failed: '+err.message);updateConnectionUI();return false}
-      finally{syncBusy=false;updateSaveStatus()}
-    }
-
-    function disconnectSheets(){if(!confirm('Turn off Google Sheets auto-sync on this browser?'))return;removeStored(API_URL_KEY);removeStored(SYNC_KEY_STORAGE);updateConnectionUI();updateSaveStatus();toast('Local mode enabled')}
-
-    async function commitMutation(action,payload,applyLocal,message){
-      if(syncBusy)return toast('Please wait for the current sync.');
-      const before=cloneState();
-      applyLocal();state.savedAt=new Date().toISOString();cacheState();renderAll();
-      if(!remoteReady()){toast(message+' • local');return true}
-      syncBusy=true;updateSaveStatus();
-      try{const res=await apiCall(action,payload);state=normalizeState(res.data);cacheState();renderAll();toast(message+' • synced');return true}
-      catch(err){state=before;cacheState();renderAll();alert('Google Sheets save failed. Your change was rolled back here.\n\n'+err.message);return false}
-      finally{syncBusy=false;updateSaveStatus()}
-    }
-
-    function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1800)}
-    function balance(debt){let v=num(debt.openingBalance);for(const t of state.transactions){if(t.debtId!==debt.id)continue;v+=t.type==='Payment'?-num(t.amount):num(t.amount)}return Math.max(0,v)}
-    const isActive=d=>balance(d)>0.005;
-    const monthKey=()=>today().slice(0,7);
-    const sum=(arr,fn)=>arr.reduce((a,x)=>a+num(fn(x)),0);
-    let billMonthSelection='';
-    function validMonth(v){return /^\d{4}-(0[1-9]|1[0-2])$/.test(String(v||''))}
-    function selectedBillMonth(){const stored=billMonthSelection||getStored(BILL_MONTH_STORAGE);return validMonth(stored)?stored:monthKey()}
-    function monthLabel(value){if(!validMonth(value))return value||'';const [y,m]=value.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('en-PH',{month:'long',year:'numeric'})}
-    function monthOffset(value,delta){const [y,m]=value.split('-').map(Number);const d=new Date(y,m-1+delta,1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}
-    function setBillMonth(value){if(!validMonth(value))return;billMonthSelection=value;setStored(BILL_MONTH_STORAGE,value);renderDashboard();renderBills()}
-    function shiftBillMonth(delta){setBillMonth(monthOffset(selectedBillMonth(),delta))}
-
-    function renderAll(){renderDebtSelect();renderDashboard();renderDebtTable();renderBills();renderRecent();updateConnectionUI();updateSaveStatus()}
-    function renderDebtSelect(){const sel=document.getElementById('txDebt');const current=sel.value;sel.innerHTML='<option value="">Choose account…</option>'+state.debts.filter(isActive).map(d=>`<option value="${h(d.id)}">${h(d.id)} • ${h(d.creditor)}</option>`).join('');if([...sel.options].some(o=>o.value===current))sel.value=current}
-
-    function renderDashboard(){
-      const business=state.debts.filter(d=>d.scope==='Business');
-      const household=state.debts.filter(d=>d.scope==='Household');
-      const base=business.filter(d=>d.type==='Fixed Installment');
-      const cards=business.filter(d=>d.type==='Running Credit');
-      const totalBusiness=sum(business,balance),baseBalance=sum(base,balance),fixedDue=sum(base.filter(isActive),d=>d.monthlyDue),cardDue=sum(cards.filter(isActive),d=>d.monthlyDue);
-      const billMonth=selectedBillMonth();const monthBills=state.bills.filter(b=>b.billingMonth===billMonth);const unpaid=monthBills.filter(b=>b.status==='Unpaid');const unpaidTotal=sum(unpaid,b=>b.amount);const hh=sum(household,balance);const monthExp=sum(state.expenses.filter(e=>String(e.date).slice(0,7)===monthKey()),e=>e.amount);const reviews=state.debts.filter(d=>d.review).length;
-      const cardsData=[['Total Business Debt',money(totalBusiness),'Includes running-credit accounts',''],['Base Business Loans',money(baseBalance),'Fixed-installment accounts',''],['Fixed Installment / Month',money(fixedDue),'Scheduled monthly amount',''],['Running Credit Statement Due',money(cardDue),'Update when statement arrives','warn'],['Current Unpaid Bills',money(unpaidTotal),`${monthLabel(billMonth)} • ${unpaid.length} unpaid`,'warn'],['Household Debt',money(hh),'Reference only',''],['Business Expenses This Month',money(monthExp),`${state.expenses.filter(e=>String(e.date).slice(0,7)===monthKey()).length} records`,''],['Review Items',String(reviews),'Source items to verify',reviews?'warn':'good']];
-      document.getElementById('dashboardCards').innerHTML=cardsData.map(c=>`<div class="card ${c[3]}"><div class="label">${h(c[0])}</div><div class="value">${h(c[1])}</div><div class="sub">${h(c[2])}</div></div>`).join('');
-      const upcoming=state.debts.filter(isActive).slice().sort((a,b)=>a.dueDay-b.dueDay).slice(0,8);
-      document.getElementById('upcomingDebts').innerHTML=upcoming.length?`<table class="data"><thead><tr><th>Due</th><th>Account</th><th class="num">Due Amount</th><th class="num">Balance</th></tr></thead><tbody>${upcoming.map(d=>`<tr><td>${h(d.dueDay)}</td><td><b>${h(d.creditor)}</b><div class="muted">${h(d.id)} • ${h(d.scope)}</div></td><td class="num money">${money(d.monthlyDue)}</td><td class="num money">${money(balance(d))}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">No active debts.</div>';
-      const paid=monthBills.filter(b=>b.status==='Paid');document.getElementById('billMonthLabel').textContent=monthLabel(billMonth);document.getElementById('billSummary').innerHTML=`<div class="summary-line"><span>Unpaid bills</span><b>${money(unpaidTotal)}</b></div><div class="summary-line"><span>Paid bills</span><b>${money(sum(paid,b=>b.amount))}</b></div><div class="summary-line"><span>All bills</span><b>${money(sum(monthBills,b=>b.amount))}</b></div><div class="summary-line"><span>Reminder</span><span class="muted">Running-credit bills may already be in Debt Master.</span></div>`;
-    }
-
-    function renderDebtTable(){
-      const rows=state.debts.slice().sort((a,b)=>a.scope.localeCompare(b.scope)||a.dueDay-b.dueDay);
-      document.getElementById('debtTable').innerHTML=`<table class="data"><thead><tr><th>ID</th><th>Scope / Creditor</th><th>Type</th><th>Due</th><th class="num">Monthly / Statement</th><th class="num">Current Balance</th><th>Review</th><th></th></tr></thead><tbody>${rows.map(d=>`<tr><td><b>${h(d.id)}</b></td><td><b>${h(d.creditor)}</b><div class="muted">${h(d.scope)}</div></td><td><span class="pill ${d.type==='Running Credit'?'running':'fixed'}">${h(d.type)}</span></td><td>Day ${h(d.dueDay)}<div class="muted">${d.terms?`${h(d.terms)} mos`:''}</div></td><td class="num money">${money(d.monthlyDue)}</td><td class="num money"><b>${money(balance(d))}</b></td><td>${d.review?`<span class="pill review">${h(d.review)}</span><div class="muted" style="max-width:270px;margin-top:4px">${h(d.note)}</div>`:'<span class="pill ok">OK</span>'}</td><td><button class="btn secondary small" type="button" onclick="openDebtDialog('${h(d.id)}')">Edit</button></td></tr>`).join('')}</tbody></table>`;
-    }
-
-    function renderBills(){
-      const month=selectedBillMonth();const input=document.getElementById('billMonthFilter');if(input&&input.value!==month)input.value=month;const rows=state.bills.filter(b=>b.billingMonth===month).slice().sort((a,b)=>a.dueDay-b.dueDay||String(a.biller).localeCompare(String(b.biller)));const help=document.getElementById('billMonthHelp');if(help)help.textContent=`${monthLabel(month)} • ${rows.length} bill${rows.length===1?'':'s'} • Copy Previous Month works only when this month is empty.`;document.getElementById('billsTable').innerHTML=rows.length?`<table class="data"><thead><tr><th>Biller</th><th class="num">Amount</th><th>Terms</th><th>Due</th><th>Category</th><th>Debt Link</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(b=>`<tr><td><b>${h(b.biller)}</b></td><td class="num money">${money(b.amount)}</td><td>${h(b.terms||'-')}</td><td>Day ${h(b.dueDay)}</td><td>${h(b.category)}</td><td>${h(b.debtId||'—')}</td><td><button class="btn small ${b.status==='Paid'?'secondary':'primary'}" type="button" onclick="toggleBill('${h(b.id)}')"><span class="pill ${b.status==='Paid'?'paid':'unpaid'}">${h(b.status)}</span></button></td><td><button class="btn secondary small" type="button" onclick="openBillDialog('${h(b.id)}')">Edit</button></td></tr>`).join('')}</tbody></table>`:`<div class="empty">No bills for ${h(monthLabel(month))}. Use <b>+ Add Bill</b> or <b>Copy Previous Month</b>.</div>`;
-    }
-
-    function renderRecent(){
-      const tx=state.transactions.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,10);
-      const ex=state.expenses.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))||String(b.createdAt).localeCompare(String(a.createdAt))).slice(0,10);
-      document.getElementById('recentDebtTx').innerHTML=tx.length?`<table class="data"><thead><tr><th>Date</th><th>Account</th><th>Type</th><th class="num">Amount</th><th></th></tr></thead><tbody>${tx.map(t=>`<tr><td>${h(t.date)}</td><td>${h(t.debtId)}<div class="muted">${h((state.debts.find(d=>d.id===t.debtId)||{}).creditor||'')}</div></td><td>${h(t.type)}</td><td class="num money">${money(t.amount)}</td><td><button class="btn link small" type="button" onclick="deleteTx('${h(t.id)}')">Undo</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No debt updates yet.</div>';
-      document.getElementById('recentExpenses').innerHTML=ex.length?`<table class="data"><thead><tr><th>Date</th><th>Description</th><th>Category</th><th class="num">Amount</th><th></th></tr></thead><tbody>${ex.map(e=>`<tr><td>${h(e.date)}</td><td>${h(e.description)}</td><td>${h(e.category)}</td><td class="num money">${money(e.amount)}</td><td><button class="btn link small" type="button" onclick="deleteExpense('${h(e.id)}')">Undo</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No expenses yet.</div>';
-    }
-
-    document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===btn.dataset.page));window.scrollTo({top:0,behavior:'smooth'})}));
-    document.getElementById('debtTxForm').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item={id:uid(),date:f.get('date'),debtId:f.get('debtId'),type:f.get('type'),amount:num(f.get('amount')),reference:String(f.get('reference')||''),notes:String(f.get('notes')||''),createdAt:new Date().toISOString()};const ok=await commitMutation('addTransaction',item,()=>state.transactions.push(item),'Debt update saved');if(ok){e.currentTarget.reset();document.getElementById('txDate').value=today();renderDebtSelect()}});
-    document.getElementById('expenseForm').addEventListener('submit',async e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item={id:uid(),date:f.get('date'),category:f.get('category'),description:String(f.get('description')||''),amount:num(f.get('amount')),method:f.get('method'),reference:String(f.get('reference')||''),notes:String(f.get('notes')||''),createdAt:new Date().toISOString()};const ok=await commitMutation('addExpense',item,()=>state.expenses.push(item),'Expense saved');if(ok){e.currentTarget.reset();document.getElementById('expDate').value=today()}});
-
-    async function deleteTx(id){if(!confirm('Undo/delete this debt update?'))return;await commitMutation('deleteTransaction',{id},()=>{state.transactions=state.transactions.filter(x=>x.id!==id)},'Debt update removed')}
-    async function deleteExpense(id){if(!confirm('Undo/delete this expense?'))return;await commitMutation('deleteExpense',{id},()=>{state.expenses=state.expenses.filter(x=>x.id!==id)},'Expense removed')}
-    async function toggleBill(id){const b=state.bills.find(x=>x.id===id);if(!b)return;const target=b.status==='Paid'?'Unpaid':'Paid';await commitMutation('setBillStatus',{id,status:target},()=>{b.status=target},`Bill marked ${target}`)}
-
-    const billDialog=document.getElementById('billDialog');
-    function fillBillDebtSelect(value=''){const sel=document.getElementById('billDebtId');sel.innerHTML='<option value="">No debt link</option>'+state.debts.map(d=>`<option value="${h(d.id)}">${h(d.id)} • ${h(d.creditor)}</option>`).join('');sel.value=value||''}
-    function openBillDialog(id=''){const b=id?state.bills.find(x=>x.id===id):null;document.getElementById('billDialogTitle').textContent=b?'Edit Monthly Bill':'Add Monthly Bill';document.getElementById('editBillId').value=b?.id||'';document.getElementById('billMonth').value=b?.billingMonth||selectedBillMonth();document.getElementById('billStatus').value=b?.status||'Unpaid';document.getElementById('billBiller').value=b?.biller||'';document.getElementById('billAmount').value=b?.amount??'';document.getElementById('billDueDay').value=b?.dueDay??'';document.getElementById('billTerms').value=b?.terms||'';document.getElementById('billCategory').value=b?.category||'Operating Bill';fillBillDebtSelect(b?.debtId||'');document.getElementById('billDeleteBtn').hidden=!b;billDialog.showModal()}
-    function closeBillDialog(){billDialog.close()}
-    document.getElementById('billForm').addEventListener('submit',async e=>{e.preventDefault();const oldId=document.getElementById('editBillId').value;const existing=oldId?state.bills.find(x=>x.id===oldId):null;const item={id:existing?.id||`bill-${uid()}`,billingMonth:document.getElementById('billMonth').value,biller:document.getElementById('billBiller').value.trim(),amount:num(document.getElementById('billAmount').value),terms:document.getElementById('billTerms').value.trim(),dueDay:num(document.getElementById('billDueDay').value),status:document.getElementById('billStatus').value,category:document.getElementById('billCategory').value.trim()||'Operating Bill',debtId:document.getElementById('billDebtId').value};const ok=await commitMutation('saveBill',item,()=>{if(existing)Object.assign(existing,item);else state.bills.push(item)},existing?'Bill updated':'Bill added');if(ok){billMonthSelection=item.billingMonth;setStored(BILL_MONTH_STORAGE,item.billingMonth);closeBillDialog();renderDashboard();renderBills()}});
-    async function deleteBillFromDialog(){const id=document.getElementById('editBillId').value;if(!id)return;if(!confirm('Delete this bill from the selected month?'))return;const ok=await commitMutation('deleteBill',{id},()=>{state.bills=state.bills.filter(x=>x.id!==id)},'Bill deleted');if(ok)closeBillDialog()}
-    async function copyPreviousMonth(){const target=selectedBillMonth();const source=monthOffset(target,-1);const sourceBills=state.bills.filter(b=>b.billingMonth===source);const targetBills=state.bills.filter(b=>b.billingMonth===target);if(targetBills.length)return alert(`${monthLabel(target)} already has bills. Edit the existing list instead so there are no duplicates.`);if(!sourceBills.length)return alert(`No bills found in ${monthLabel(source)}.`);if(!confirm(`Copy ${sourceBills.length} bill${sourceBills.length===1?'':'s'} from ${monthLabel(source)} to ${monthLabel(target)}?\n\nAll copied bills will start as Unpaid.`))return;const copies=sourceBills.map(b=>({...b,id:`bill-${uid()}`,billingMonth:target,status:'Unpaid'}));await commitMutation('copyBillsFromMonth',{sourceMonth:source,targetMonth:target},()=>state.bills.push(...copies),`Copied ${sourceBills.length} bills`)}
-
-    const dialog=document.getElementById('debtDialog');
-    function openDebtDialog(id=''){const d=id?state.debts.find(x=>x.id===id):null;document.getElementById('debtDialogTitle').textContent=d?'Edit Loan / Account':'Add Loan / Account';document.getElementById('editDebtId').value=d?.id||'';document.getElementById('debtScope').value=d?.scope||'Business';document.getElementById('debtType').value=d?.type||'Fixed Installment';document.getElementById('debtCreditor').value=d?.creditor||'';document.getElementById('debtOpening').value=d?.openingBalance??'';document.getElementById('debtDueAmount').value=d?.monthlyDue??'';document.getElementById('debtTerms').value=d?.terms??'';document.getElementById('debtDueDay').value=d?.dueDay??'';document.getElementById('debtNote').value=d?.note||'';dialog.showModal()}
-    function closeDebtDialog(){dialog.close()}
-    function nextDebtId(scope,type){const prefix=scope==='Household'?'HH':type==='Running Credit'?'CC':'BUS';const nums=state.debts.filter(d=>d.id.startsWith(prefix+'-')).map(d=>parseInt(d.id.split('-')[1],10)||0);return `${prefix}-${String(Math.max(0,...nums)+1).padStart(3,'0')}`}
-    document.getElementById('debtForm').addEventListener('submit',async e=>{e.preventDefault();const oldId=document.getElementById('editDebtId').value;const scope=document.getElementById('debtScope').value;const type=document.getElementById('debtType').value;const base={scope,type,creditor:document.getElementById('debtCreditor').value.trim(),openingBalance:num(document.getElementById('debtOpening').value),monthlyDue:num(document.getElementById('debtDueAmount').value),terms:document.getElementById('debtTerms').value?num(document.getElementById('debtTerms').value):null,dueDay:num(document.getElementById('debtDueDay').value),note:document.getElementById('debtNote').value.trim()};const existing=oldId?state.debts.find(x=>x.id===oldId):null;const item=existing?{...existing,...base,review:base.note?(existing.review||''):''}:{id:nextDebtId(scope,type),...base,review:''};const ok=await commitMutation('saveDebt',item,()=>{if(existing)Object.assign(existing,item);else state.debts.push(item)},oldId?'Account updated':'New account added');if(ok)closeDebtDialog()});
-
-    async function resetToSource(){const msg=remoteReady()?'Reset the V2 tracker to its private starting dataset? This removes saved V2 payments, new charges, monthly bill changes and expenses.':'Clear all data stored by this tracker in Local Mode?';if(!confirm(msg))return;const fresh=seedState();await commitMutation('resetData',{confirm:'RESET'},()=>{state=fresh},remoteReady()?'Reset to source data':'Local tracker cleared')}
-
-    const AUTO_SYNC_MS=60000;
-    function autoSyncFromSheets(){if(!remoteReady()||syncBusy||document.visibilityState!=='visible'||document.querySelector('dialog[open]'))return;syncFromSheets(true)}
-    document.getElementById('txDate').value=today();document.getElementById('expDate').value=today();renderAll();if(remoteReady())syncFromSheets(true);
-    setInterval(autoSyncFromSheets,AUTO_SYNC_MS);
-    window.addEventListener('focus',autoSyncFromSheets);
-    window.addEventListener('online',autoSyncFromSheets);
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')autoSyncFromSheets()});
-  </script>
+  <div id="toast" class="toast"></div>
+  <footer>TechGeekPH Financial Control Center V3.0 • Google Sheets remains the source of truth • Connection key stays only in this browser.</footer>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>
