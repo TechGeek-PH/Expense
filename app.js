@@ -247,7 +247,7 @@ function bind(){
 function init(){
   document.getElementById('expDate').value=today();document.getElementById('txDate').value=today();document.getElementById('expenseMonth').value=getStored(EXP_MONTH_STORAGE)||currentMonth();document.getElementById('billMonth').value=getStored(BILL_MONTH_STORAGE)||state.billingMonth||currentMonth();
   bind();renderAll();
-  if(remoteReady())syncFromSheets(true);else setTimeout(openConnection,300);
+  if(remoteReady())syncFromSheets(true);else updateConnectionUI();
   setInterval(()=>{if(remoteReady()&&!syncBusy)syncFromSheets(true)},60000);
 }
 document.addEventListener('DOMContentLoaded',init);
